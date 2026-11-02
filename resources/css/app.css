@@ -237,8 +237,10 @@ h1 { margin-bottom: 7px; color: #f0f1ea; font-family: Manrope, sans-serif; font-
 .form-field > label > span { color: #d9857a; }
 .form-field > input, .input-with-icon, .select-wrap { width: 100%; height: 39px; color: #e2e4db; background: #121310; border: 1px solid #34362f; border-radius: 5px; }
 .form-field > input { padding: 0 11px; outline: none; font-size: 10px; }
-.form-field input:focus, .select-wrap:focus-within, .input-with-icon:focus-within { border-color: #77964e; box-shadow: 0 0 0 2px #b8ef7210; }
+.form-field > textarea { display: block; width: 100%; min-height: 78px; padding: 10px 11px; color: #e2e4db; background: #121310; border: 1px solid #34362f; border-radius: 5px; outline: 0; resize: vertical; font-size: 10px; }
+.form-field input:focus, .form-field > textarea:focus, .select-wrap:focus-within, .input-with-icon:focus-within { border-color: #77964e; box-shadow: 0 0 0 2px #b8ef7210; }
 .form-field > input::placeholder, .input-with-icon input::placeholder { color: #666960; }
+.form-field > textarea::placeholder { color: #666960; }
 .form-field > small { display: block; margin-top: 6px; color: #73766c; font-size: 9px; }
 .input-with-icon { display: flex; align-items: center; gap: 9px; padding: 0 11px; }
 .input-with-icon input { width: 100%; height: 100%; color: #e2e4db; background: transparent; border: 0; outline: 0; font-size: 10px; }

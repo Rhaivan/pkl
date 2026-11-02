@@ -6,7 +6,7 @@
 @section('content')
     <div class="page-heading users-page-heading">
         <div>
-            <div class="eyebrow"><span class="eyebrow-line"></span> DIREKTORI PENGGUNA</div>
+            
             <h1>Data pengguna</h1>
             <p>Kelola informasi dan minat karier pengguna ErgoJob.</p>
         </div>

@@ -32,6 +32,16 @@
                     <small>Gunakan email aktif yang dapat dihubungi.</small>
                 </div>
                 <div class="form-field">
+                    <label for="phone">Nomor telepon <span>*</span></label>
+                    <div class="input-with-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7.2 3.5h2.4l1.2 4.2-1.8 1.8a14.4 14.4 0 0 0 5.5 5.5l1.8-1.8 4.2 1.2v2.4a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 5.2 5.7a2 2 0 0 1 2-2.2Z"/></svg><input id="phone" type="tel" placeholder="Contoh: 0812 3456 7890" value="{{ $isEdit ? '0812 3456 7890' : '' }}" required></div>
+                    <small>Masukkan nomor telepon aktif pengguna.</small>
+                </div>
+                <div class="form-field">
+                    <label for="address">Alamat pengguna <span>*</span></label>
+                    <textarea id="address" placeholder="Masukkan alamat lengkap pengguna" required>{{ $isEdit ? 'Jl. Melati No. 12, Jakarta Selatan' : '' }}</textarea>
+                    <small>Masukkan alamat tempat tinggal pengguna.</small>
+                </div>
+                <div class="form-field">
                     <label>Jenis kelamin <span>*</span></label>
                     <div class="gender-options">
                         <label class="radio-card"><input type="radio" name="gender" value="perempuan" {{ $isEdit ? 'checked' : '' }}><span class="radio-dot"></span><span>Perempuan</span><span class="gender-symbol">♀</span></label>

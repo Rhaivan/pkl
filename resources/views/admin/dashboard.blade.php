@@ -33,7 +33,7 @@
         </article>
         <article class="stat-card">
             <div class="stat-top"><span>Minat terpopuler</span><span class="stat-icon amber"><svg viewBox="0 0 24 24" fill="none"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9L12 3Z"/></svg></span></div>
-            <div class="stat-value stat-text">{{ $topInterest['label'] ?? 'Belum ada data' }} <span>· {{ number_format($topInterestPercent, 1, ',', '.') }}%</span></div>
+            <div class="stat-value stat-text">{{ $topInterest['label'] ?? 'Belum ada data' }} <span>&middot; {{ number_format($topInterestPercent, 1, ',', '.') }}%</span></div>
             <div class="stat-foot"><span class="stat-muted">{{ number_format($topInterest['count'] ?? 0, 0, ',', '.') }} pengguna</span></div>
             <div class="interest-track"><span style="width: {{ min($topInterestPercent, 100) }}%"></span></div>
         </article>
@@ -42,10 +42,10 @@
     <div class="dashboard-grid">
         <section class="panel activity-panel">
             <div class="panel-heading">
-                <div><h2>Jumlah pengguna per minat</h2><p>Distribusi berdasarkan data minat yang tersimpan</p></div>
-                <span class="live-indicator"><i></i> Data langsung</span>
+                <div><h2>Pendaftaran pengguna</h2><p>Pengguna yang mendaftar dalam 7 hari terakhir</p></div>
+                <button class="select-button" type="button">7 hari terakhir</button>
             </div>
-            <div class="chart-summary"><strong>{{ number_format($totalPengguna, 0, ',', '.') }}</strong><small>pengguna terdaftar</small></div>
+            <div class="chart-summary"><strong>{{ number_format($registrationTotal, 0, ',', '.') }}</strong><small>pendaftaran baru</small></div>
             <div class="chart-wrap">
                 <div class="chart-y-labels">
                     @foreach ($chartYLabels as $label)
@@ -54,8 +54,8 @@
                 </div>
                 <div class="chart">
                     <div class="chart-grid"><i></i><i></i><i></i><i></i><i></i></div>
-                    @if ($chartPoints->isNotEmpty())
-                        <svg class="chart-line" viewBox="0 0 700 180" preserveAspectRatio="none" role="img" aria-label="Grafik jumlah pengguna untuk tiap minat">
+                    @if ($registrationTotal > 0)
+                        <svg class="chart-line" viewBox="0 0 700 180" preserveAspectRatio="none" role="img" aria-label="Grafik pendaftaran pengguna dalam 7 hari terakhir">
                             <defs><linearGradient id="chartFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#b8ef72" stop-opacity=".2"/><stop offset="100%" stop-color="#b8ef72" stop-opacity="0"/></linearGradient></defs>
                             <path d="{{ $chartAreaPath }}" fill="url(#chartFill)"/>
                             <path d="{{ $chartLinePath }}" fill="none" stroke="#b8ef72" stroke-width="3" vector-effect="non-scaling-stroke"/>
@@ -66,39 +66,39 @@
                             @endforeach
                         </svg>
                     @else
-                        <div class="chart-empty">Belum ada data minat untuk ditampilkan.</div>
+                        <div class="chart-empty">Belum ada pendaftaran bertanggal dalam 7 hari terakhir. Tanggal mulai tercatat untuk pendaftaran baru.</div>
                     @endif
                     <div class="chart-x-labels">
-                        @forelse ($chartItems as $item)
-                            <span title="{{ $item['label'] }}">{{ $item['label'] }}</span>
-                        @empty
-                            <span>Belum ada data</span>
-                        @endforelse
+                        @foreach ($registrationDays as $day)
+                            <span title="{{ $day['date'] }}">{{ $day['label'] }}</span>
+                        @endforeach
                     </div>
                 </div>
             </div>
         </section>
 
         <section class="panel interests-panel">
-            <div class="panel-heading"><div><h2>Komposisi jenis kelamin</h2><p>Distribusi pengguna di database</p></div></div>
+            <div class="panel-heading"><div><h2>Bidang yang diminati</h2><p>Distribusi minat pengguna</p></div></div>
             <div class="interest-chart">
-                <div class="donut" style="background: {{ $genderGradient }}">
+                <div class="donut" style="background: {{ $interestGradient }}">
                     <div><strong>{{ number_format($totalPengguna, 0, ',', '.') }}</strong><span>pengguna</span></div>
                 </div>
                 <div class="legend">
-                    @foreach ($genderBreakdown as $item)
+                    @forelse ($interestBreakdown as $item)
                         <div><i style="background: {{ $item['color'] }}"></i><span>{{ $item['label'] }}</span><strong>{{ number_format($item['percent'], 1, ',', '.') }}%</strong></div>
-                    @endforeach
+                    @empty
+                        <p class="stat-muted">Belum ada data minat.</p>
+                    @endforelse
                 </div>
             </div>
-            <a class="text-link" href="{{ route('users.index') }}">Lihat data pengguna <span>→</span></a>
+            <a class="text-link" href="{{ route('users.index') }}">Lihat data pengguna <span>&rarr;</span></a>
         </section>
     </div>
 
     <section class="panel recent-panel">
         <div class="panel-heading recent-heading">
             <div><h2>Pengguna terbaru</h2><p>Diurutkan berdasarkan ID pengguna terbesar</p></div>
-            <a class="button button-secondary" href="{{ route('users.index') }}">Lihat semua <span>→</span></a>
+            <a class="button button-secondary" href="{{ route('users.index') }}">Lihat semua <span>&rarr;</span></a>
         </div>
         <div class="table-scroll">
             <table class="user-table">

@@ -63,42 +63,6 @@ class DashboardController extends Controller
             })
             ->values();
 
-        $chartItems = $interestBreakdown->take(6)->values();
-        if ($interestBreakdown->count() > 6) {
-            $chartItems->push([
-                'label' => 'Lainnya',
-                'count' => $interestBreakdown->slice(6)->sum('count'),
-            ]);
-        }
-
-        $chartMax = max(1, (int) $chartItems->max('count'));
-        $chartPoints = $chartItems->values()->map(function (array $item, int $index) use ($chartItems, $chartMax) {
-            $pointCount = $chartItems->count();
-            $x = $pointCount === 1 ? 350 : (int) round($index * 700 / ($pointCount - 1));
-            $y = round(160 - (((int) $item['count'] / $chartMax) * 140), 2);
-
-            return [
-                'x' => $x,
-                'y' => $y,
-                'label' => $item['label'],
-                'count' => (int) $item['count'],
-            ];
-        });
-
-        $chartLinePath = $chartPoints
-            ->map(fn (array $point, int $index) => ($index === 0 ? 'M ' : 'L ') . $point['x'] . ' ' . $point['y'])
-            ->implode(' ');
-        $chartAreaPath = $chartPoints->isEmpty()
-            ? ''
-            : $chartLinePath . ' L 700 180 L 0 180 Z';
-        $chartYLabels = [
-            $chartMax,
-            (int) round($chartMax * 0.75),
-            (int) round($chartMax * 0.5),
-            (int) round($chartMax * 0.25),
-            0,
-        ];
-
         $genderOffset = 0.0;
         $genderSegments = $genderBreakdown->map(function (array $item) use (&$genderOffset) {
             $start = $genderOffset;
@@ -123,6 +87,56 @@ class DashboardController extends Controller
                 ->map(fn (array $item) => sprintf('%s %.2f%% %.2f%%', $item['color'], $item['start'], $item['end']))
                 ->implode(', ') . ')';
 
+        $today = now('Asia/Jakarta')->startOfDay();
+        $weekStart = $today->copy()->subDays(6);
+        $weekEnd = $today->copy()->endOfDay();
+
+        $dailyCounts = Pengguna::query()
+            ->selectRaw('DATE(tanggal_daftar) AS tanggal, COUNT(*) AS total')
+            ->whereBetween('tanggal_daftar', [$weekStart->toDateTimeString(), $weekEnd->toDateTimeString()])
+            ->groupByRaw('DATE(tanggal_daftar)')
+            ->pluck('total', 'tanggal');
+
+        $registrationDays = collect(range(6, 0))
+            ->map(fn (int $daysAgo) => $today->copy()->subDays($daysAgo))
+            ->map(function ($date) use ($dailyCounts) {
+                $key = $date->toDateString();
+
+                return [
+                    'date' => $key,
+                    'label' => $date->format('d/m'),
+                    'count' => (int) ($dailyCounts[$key] ?? 0),
+                ];
+            })
+            ->values();
+
+        $registrationTotal = $registrationDays->sum('count');
+        $dailyMaximum = (int) $registrationDays->max('count');
+        $chartScaleMax = max(4, (int) (ceil($dailyMaximum / 4) * 4));
+        $chartPoints = $registrationDays->map(function (array $day, int $index) use ($chartScaleMax) {
+            $x = (int) round($index * 700 / 6);
+            $y = round(160 - (($day['count'] / $chartScaleMax) * 140), 2);
+
+            return [
+                'x' => $x,
+                'y' => $y,
+                'label' => $day['label'],
+                'count' => $day['count'],
+            ];
+        });
+
+        $chartLinePath = $chartPoints
+            ->map(fn (array $point, int $index) => ($index === 0 ? 'M ' : 'L ') . $point['x'] . ' ' . $point['y'])
+            ->implode(' ');
+        $chartAreaPath = $chartLinePath . ' L 700 180 L 0 180 Z';
+        $chartYLabels = [
+            $chartScaleMax,
+            (int) round($chartScaleMax * 0.75),
+            (int) round($chartScaleMax * 0.5),
+            (int) round($chartScaleMax * 0.25),
+            0,
+        ];
+
         return view('admin.dashboard', [
             'totalPengguna' => $totalPengguna,
             'genderBreakdown' => $genderBreakdown,
@@ -133,7 +147,8 @@ class DashboardController extends Controller
             'topInterestPercent' => $topInterest && $totalPengguna > 0
                 ? ($topInterest['count'] / $totalPengguna) * 100
                 : 0,
-            'chartItems' => $chartItems,
+            'registrationDays' => $registrationDays,
+            'registrationTotal' => $registrationTotal,
             'chartPoints' => $chartPoints,
             'chartLinePath' => $chartLinePath,
             'chartAreaPath' => $chartAreaPath,

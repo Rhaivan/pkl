@@ -20,4 +20,11 @@ class Pengguna extends Model
         'no_telepon',
         'minat',
     ];
+
+    protected static function booted(): void
+    {
+        static::creating(function (Pengguna $pengguna): void {
+            $pengguna->tanggal_daftar ??= now('Asia/Jakarta');
+        });
+    }
 }

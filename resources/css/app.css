@@ -340,3 +340,35 @@ h1 { margin-bottom: 7px; color: #f0f1ea; font-family: Manrope, sans-serif; font-
     .donut::before { width: 83px; height: 83px; }
     .donut strong { font-size: 16px; }
 }
+
+.field-error { color: #e48a7f !important; }
+.crud-flash { margin: 0 18px 12px; padding: 10px 12px; color: #d9ebbf; background: #20291a; border: 1px solid #35452a; border-radius: 6px; font-size: 10px; }
+.table-muted { color: #777a70; }
+.address-cell { max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.row-actions form { display: inline-flex; }
+.row-action-danger:hover { color: #e48a7f; }
+.empty-state { padding: 35px 18px !important; color: #898c81; text-align: center; }
+.pagination-controls nav { display: flex; align-items: center; gap: 4px; }
+.pagination-controls nav > div:first-child { display: none; }
+.pagination-controls nav > div:last-child > div:first-child { display: none; }
+.pagination-controls nav > div:last-child > div:last-child > span { display: flex; gap: 4px; }
+.pagination-controls nav a, .pagination-controls nav span[aria-current="page"] span, .pagination-controls nav span[aria-disabled="true"] span { display: grid; place-items: center; min-width: 26px; height: 26px; padding: 0 6px; color: #a4a69d; background: transparent; border: 1px solid transparent; border-radius: 4px; font-size: 9px; }
+.pagination-controls nav a:hover { background: #22241f; border-color: #32342e; }
+.pagination-controls nav span[aria-current="page"] span { color: #1c2115; background: var(--lime); font-weight: 700; }
+.live-indicator { display: inline-flex; align-items: center; gap: 6px; padding: 6px 8px; color: #aeb3a2; background: #20251a; border: 1px solid #303a25; border-radius: 5px; font-size: 8px; white-space: nowrap; }
+.live-indicator i { width: 6px; height: 6px; background: var(--lime); border-radius: 50%; box-shadow: 0 0 8px #b8ef7280; }
+.gender-breakdown { display: flex; flex-direction: column; justify-content: center; gap: 23px; min-height: 190px; padding: 15px 10px 0 28px; }
+.gender-row-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 9px; color: #aeb1a7; font-size: 10px; }
+.gender-row-heading > span { display: inline-flex; align-items: center; gap: 8px; }
+.gender-row-heading > span i { width: 8px; height: 8px; border-radius: 3px; }
+.gender-row-heading strong { color: #e2e4db; font-size: 11px; font-weight: 600; }
+.gender-row-heading small { color: #85887e; font-size: 9px; font-weight: 400; }
+.gender-track { height: 8px; overflow: hidden; background: #292b26; border-radius: 8px; }
+.gender-track span { display: block; height: 100%; border-radius: inherit; transition: width .25s ease; }
+.gender-total { display: flex; justify-content: space-between; padding-top: 13px; color: #85887e; border-top: 1px solid #30322c; font-size: 9px; }
+.gender-total strong { color: #d8dad1; font-weight: 600; }
+.interest-chart { align-items: center; }
+.legend { max-height: 180px; overflow-y: auto; }
+.stat-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.chart-empty { position: absolute; inset: 0 0 18px; display: grid; place-items: center; color: #777a70; font-size: 9px; }
+.chart-x-labels span { max-width: 90px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
